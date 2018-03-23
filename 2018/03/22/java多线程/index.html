@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="线程生命周期 新建状态:&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;顾名思义，就是新建一个线程。处于新建状态的线程有自己的内存空间，通过调用start方法进入就绪状态。">
+<meta name="description" content="本文介绍线程的生命周期：新建状态、就绪状态、运行状态、阻塞状态、死亡状态；以及实现多线程的四种方式：继承Thread类、实现Runnable类、实现Callable、通过线程池创建，其中前两种无返回值，后两种有返回值。">
 <meta name="keywords" content="多线程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java多线程">
+<meta property="og:title" content="初识多线程">
 <meta property="og:url" content="http://yoursite.com/2018/03/22/java多线程/index.html">
 <meta property="og:site_name" content="桥">
-<meta property="og:description" content="线程生命周期 新建状态:&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;顾名思义，就是新建一个线程。处于新建状态的线程有自己的内存空间，通过调用start方法进入就绪状态。">
+<meta property="og:description" content="本文介绍线程的生命周期：新建状态、就绪状态、运行状态、阻塞状态、死亡状态；以及实现多线程的四种方式：继承Thread类、实现Runnable类、实现Callable、通过线程池创建，其中前两种无返回值，后两种有返回值。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-22T11:51:47.667Z">
+<meta property="og:updated_time" content="2018-03-23T09:16:44.994Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java多线程">
-<meta name="twitter:description" content="线程生命周期 新建状态:&amp;ensp;&amp;ensp;&amp;ensp;&amp;ensp;顾名思义，就是新建一个线程。处于新建状态的线程有自己的内存空间，通过调用start方法进入就绪状态。">
+<meta name="twitter:title" content="初识多线程">
+<meta name="twitter:description" content="本文介绍线程的生命周期：新建状态、就绪状态、运行状态、阻塞状态、死亡状态；以及实现多线程的四种方式：继承Thread类、实现Runnable类、实现Callable、通过线程池创建，其中前两种无返回值，后两种有返回值。">
 
 
 
@@ -128,7 +128,7 @@
 
 
 
-  <title>Java多线程 | 桥</title>
+  <title>初识多线程 | 桥</title>
   
 
 
@@ -288,7 +288,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java多线程</h1>
+          <h1 class="post-title" itemprop="name headline">初识多线程</h1>
         
 
         <div class="post-meta">
@@ -345,6 +345,10 @@
 
           
 
+          
+              <div class="post-description">
+                  <center><font color="#888888">本文介绍线程的生命周期：新建状态、就绪状态、运行状态、阻塞状态、死亡状态；以及实现多线程的四种方式：继承Thread类、实现Runnable类、实现Callable、通过线程池创建，其中前两种无返回值，后两种有返回值。</font></center>
+              </div>
           
 
         </div>
@@ -426,6 +430,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/03/23/让线程更安全/" rel="prev" title="让线程更安全">
+                让线程更安全 <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -505,7 +513,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -636,7 +644,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共2.6k字</span>
+  <span class="post-count">博客全站共3.4k字</span>
 </div>
 
         

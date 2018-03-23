@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="多线程," />
 
 
 
@@ -81,17 +81,18 @@
 
 
 
-<meta name="description" content="游戏，电脑，手机">
-<meta property="og:type" content="website">
-<meta property="og:title" content="标个签">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep">
+<meta name="keywords" content="多线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让线程更安全">
+<meta property="og:url" content="http://yoursite.com/2018/03/23/让线程更安全/index.html">
 <meta property="og:site_name" content="桥">
-<meta property="og:description" content="游戏，电脑，手机">
+<meta property="og:description" content="本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-21T06:55:28.058Z">
+<meta property="og:updated_time" content="2018-03-23T09:13:52.963Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="标个签">
-<meta name="twitter:description" content="游戏，电脑，手机">
+<meta name="twitter:title" content="让线程更安全">
+<meta name="twitter:description" content="本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep">
 
 
 
@@ -121,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/23/让线程更安全/"/>
 
 
 
 
 
-  <title>标个签 | 桥</title>
+  <title>让线程更安全 | 桥</title>
   
 
 
@@ -258,40 +259,208 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/23/让线程更安全/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桥">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">标个签</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 2 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/多线程/" style="font-size: 30px; color: #111">多线程</a> <a href="/tags/设计模式/" style="font-size: 12px; color: #ccc">设计模式</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">让线程更安全</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T17:08:21+08:00">
+                2018-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  <center><font color="#888888">本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep</font></center>
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="让线程更安全"><a href="#让线程更安全" class="headerlink" title="让线程更安全"></a>让线程更安全</h1><p>&nbsp;&nbsp;在多线程编程中要时刻保持着三个核心的概念</p>
+<ol>
+<li>原子性：<br>&nbsp;&nbsp;原子是不可分的，原子性通俗的讲就是一次操作包含有多个步骤，这些步骤要么全部生效，要么全都无效。这一点和数据库事物的原子性概念差不多。<a id="more"></a></li>
+<li>可见性：<br>&nbsp;&nbsp;当多个线程并发访问同一个共享变量时，一个线程对共享变量的修改，其他线程能够立即看到。</li>
+<li>顺序性：<br>&nbsp;&nbsp;顺序性，指的是按照代码的先后顺序执行。但实际上JVM真正的在执行代码时，并不会保证完全按顺序执行，它为了提高执行效率会对代码进行优化，按照更高效的顺序执行。但它会保证程序最终的执行结果和按代码顺序执行时的结果保持一致的。</li>
+</ol>
+<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p> &nbsp;&nbsp;常用的方法便是锁和同步代码块。</p>
+<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p> &nbsp;&nbsp;使用锁，保证同一时间只有一个线程可以使用得到锁，保证一个线程能够执行申请锁和释放锁之间的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void testLock()&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        int a = 1 ;</span><br><span class="line">        int b = 2 ;</span><br><span class="line">        int c = a + b ;</span><br><span class="line">    &#125;finally &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;为了确保可以释放锁，需要把lock.unlock()放到finally中</p>
+<h3 id="同步代码块"><a href="#同步代码块" class="headerlink" title="同步代码块"></a>同步代码块</h3><p>&nbsp;&nbsp;和锁类似，都是实现资源的排他性，同一时间只会被一个线程执行，保证了代码段的原子性。同时也牺牲了性能。同步代码块使用非静态同步方法时，锁住的是当前实例，使用静态同步方法时，锁住的是该类的Class对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void testLock()&#123;</span><br><span class="line">    Object object = new Object();</span><br><span class="line">    synchronized (object)&#123;</span><br><span class="line">        int a = 1 ;</span><br><span class="line">        int b = 2 ;</span><br><span class="line">        int c = a + b ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Atomic"><a href="#Atomic" class="headerlink" title="Atomic"></a>Atomic</h3><p>&nbsp;&nbsp;<a href="https://blog.csdn.net/zhangerqing/article/details/43057799" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/43057799</a></p>
+<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>&nbsp;&nbsp;Java提供了volatile保证了可见性。使用volatile修饰变量时，对该变量的修改会立刻更新到内存，其他线程读取时就会获得最新的值。</p>
+<h2 id="顺序性"><a href="#顺序性" class="headerlink" title="顺序性"></a>顺序性</h2><p>&nbsp;&nbsp;JVM通过happens-before原则隐性地保证顺序性。hapens-before原则：</p>
+<ol>
+<li>传递规则：动作1发生在动作2之前，动作2发生在动作3之前，则动作1肯定发生在动作3之前。</li>
+<li>锁定规则：unlock肯定会在下一个对同一个锁的lock之前发生。</li>
+<li>volatile原则：对被volatile修饰的写操作发生在后面对这个变量的读操作之前。</li>
+<li>程序次序规则：同一个线程内，按代码顺序执行</li>
+<li>线程启动规则：Thread对象的start方法比该线程所有动作都先发生。</li>
+<li>线程终结原则：线程终止检测最后发生。</li>
+<li>线程中断规则： 对线程interrupt()方法的调用先发生于对该中断异常的获取。</li>
+<li>对象终结规则：一个对象构造先于它的finalize发生。</li>
+</ol>
+<h1 id="拓展sleep和wait区别"><a href="#拓展sleep和wait区别" class="headerlink" title="拓展sleep和wait区别"></a>拓展sleep和wait区别</h1><p>&nbsp;&nbsp;wait是object类的方法，会释放锁，让出cpu，可以使用notify或notifyAll方法激活，再次获得锁便可以继续执行。sleep是线程静态方法不会释放锁。</p>
+<p align="right"><font color="#888">后续补充。。。。</font></p>
+
+
+
       
     </div>
     
     
     
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/22/java多线程/" rel="next" title="初识多线程">
+                <i class="fa fa-chevron-left"></i> 初识多线程
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -324,8 +493,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -412,6 +590,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#让线程更安全"><span class="nav-number">1.</span> <span class="nav-text">让线程更安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">1.1.</span> <span class="nav-text">原子性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-number">1.1.1.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步代码块"><span class="nav-number">1.1.2.</span> <span class="nav-text">同步代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Atomic"><span class="nav-number">1.1.3.</span> <span class="nav-text">Atomic</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">1.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序性"><span class="nav-number">1.3.</span> <span class="nav-text">顺序性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展sleep和wait区别"><span class="nav-number">2.</span> <span class="nav-text">拓展sleep和wait区别</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
