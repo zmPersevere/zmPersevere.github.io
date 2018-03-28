@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="搜索引擎," />
 
 
 
@@ -81,19 +81,18 @@
 
 
 
-<meta name="description" content="This is me  我们只有一条出路，那就是努力努力再努力，成为高级程序员，专门开发傻瓜软件，让其他程序员到一边凉快去。 这儿是我的个人博客，我叫张明。努力做2个程序猿。我的QQ:982555907">
-<meta property="og:type" content="website">
-<meta property="og:title" content="桥">
-<meta property="og:url" content="http://yoursite.com/about/index.html">
+<meta name="description" content="本文介绍mysql的两种常用搜索引擎innoDB和MyISAM，并比较两种的不同以及适用场景。">
+<meta name="keywords" content="搜索引擎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql常用搜索引擎">
+<meta property="og:url" content="http://yoursite.com/2018/03/28/mysql常用搜索引擎/index.html">
 <meta property="og:site_name" content="桥">
-<meta property="og:description" content="This is me  我们只有一条出路，那就是努力努力再努力，成为高级程序员，专门开发傻瓜软件，让其他程序员到一边凉快去。 这儿是我的个人博客，我叫张明。努力做2个程序猿。我的QQ:982555907">
+<meta property="og:description" content="本文介绍mysql的两种常用搜索引擎innoDB和MyISAM，并比较两种的不同以及适用场景。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1521622671&di=0ba67cf21bfdc4145d5a1f9aa7468c2a&src=http://bpic.ooopic.com/16/37/37/16373740-bc97483a99d47900ca303fd02a96a79c.jpg">
-<meta property="og:updated_time" content="2018-03-21T09:34:20.545Z">
+<meta property="og:updated_time" content="2018-03-28T05:54:07.951Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="桥">
-<meta name="twitter:description" content="This is me  我们只有一条出路，那就是努力努力再努力，成为高级程序员，专门开发傻瓜软件，让其他程序员到一边凉快去。 这儿是我的个人博客，我叫张明。努力做2个程序猿。我的QQ:982555907">
-<meta name="twitter:image" content="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1521622671&di=0ba67cf21bfdc4145d5a1f9aa7468c2a&src=http://bpic.ooopic.com/16/37/37/16373740-bc97483a99d47900ca303fd02a96a79c.jpg">
+<meta name="twitter:title" content="mysql常用搜索引擎">
+<meta name="twitter:description" content="本文介绍mysql的两种常用搜索引擎innoDB和MyISAM，并比较两种的不同以及适用场景。">
 
 
 
@@ -123,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/about/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/28/mysql常用搜索引擎/"/>
 
 
 
 
 
-  <title> | 桥</title>
+  <title>mysql常用搜索引擎 | 桥</title>
   
 
 
@@ -260,38 +259,224 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/28/mysql常用搜索引擎/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桥">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline"></h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <p><br></p>
-<p><center> <font size="6" color="#666666">This is me</font> </center></p>
-<p><center><font size="5" color="#888888"><strong><em>我们只有一条出路，那就是努力努力再努力，成为高级程序员，专门开发傻瓜软件，让其他程序员到一边凉快去。</em></strong></font></center><br><img src="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&amp;quality=100&amp;size=b4000_4000&amp;sec=1521622671&amp;di=0ba67cf21bfdc4145d5a1f9aa7468c2a&amp;src=http://bpic.ooopic.com/16/37/37/16373740-bc97483a99d47900ca303fd02a96a79c.jpg" alt="这里写图片描述"><br><br><br><br></p>
-<font size="3" color="#888888">这儿是我的个人博客，我叫张明。努力做2个程序猿。</font><br><br><br><font size="3" color="#888888">我的QQ:982555907</font>
-
-
+          <h1 class="post-title" itemprop="name headline">mysql常用搜索引擎</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-28T13:51:51+08:00">
+                2018-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">mysql</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  <center><font color="#888888">本文介绍mysql的两种常用搜索引擎innoDB和MyISAM，并比较两种的不同以及适用场景。</font></center>
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h1 id="mysql常用搜索引擎"><a href="#mysql常用搜索引擎" class="headerlink" title="mysql常用搜索引擎"></a>mysql常用搜索引擎</h1><h2 id="innoDB简介"><a href="#innoDB简介" class="headerlink" title="innoDB简介"></a>innoDB简介</h2><p>innoDB引擎，它是一个事务型的引擎，它设计为了处理大量数据提供高性能的服务。它支持事物处理、实现sql标准的四种隔离级、支持行级锁但行级锁并不是决对的、外键以及利用事物日志进行数据的恢复，不支持FULLTEXT类型的索引，清空表时不会新建表而是一行一行删除。适合需要事物，大量数据读写的项目。</p>
+<h2 id="MyISAM简介"><a href="#MyISAM简介" class="headerlink" title="MyISAM简介"></a>MyISAM简介</h2><p>MyISAM引擎是mysql的默认引擎，它可以高性能的读取。表级别锁，记录了全表的行数，当使用count时不会进行全表扫描，不支持事物，对表进行insert和update时会对表进行锁定，发生故障无法恢复。适合不需要事物，读取频繁，插入少的项目。</p>
+<h2 id="引擎对比"><a href="#引擎对比" class="headerlink" title="引擎对比"></a>引擎对比</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">对比</th>
+<th style="text-align:center">innoDB</th>
+<th style="text-align:center">MyISAM </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">主外键</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">X</td>
+</tr>
+<tr>
+<td style="text-align:center">事物</td>
+<td style="text-align:center">O</td>
+<td style="text-align:center">X</td>
+</tr>
+<tr>
+<td style="text-align:center">锁</td>
+<td style="text-align:center">行级，操作时指锁定一行，适合高并发</td>
+<td style="text-align:center">表级，操作时会锁住整张表</td>
+</tr>
+<tr>
+<td style="text-align:center">缓存</td>
+<td style="text-align:center">既缓存索引又缓存数据，对内存要求高，内存影响性能</td>
+<td style="text-align:center">只缓存索引不缓存数据</td>
+</tr>
+<tr>
+<td style="text-align:center">表空间</td>
+<td style="text-align:center">大</td>
+<td style="text-align:center">小</td>
+</tr>
+<tr>
+<td style="text-align:center">关注点</td>
+<td style="text-align:center">事物</td>
+<td style="text-align:center">性能</td>
+</tr>
+</tbody>
+</table>
+<h2 id="innoDB死锁"><a href="#innoDB死锁" class="headerlink" title="innoDB死锁"></a>innoDB死锁</h2><p>innoDB是行级别锁，但mysql行级锁不是锁主整行，而是锁主索引，索引又分为主键索引和非主键索引，当操作了主键，则锁住主键，当操作了非主键索引，则会先锁住这个非主键索引再去锁住主键。这样就造成了会出现死锁的现象。</p>
+<h2 id="查询时MyISAM为什么比innoDB快"><a href="#查询时MyISAM为什么比innoDB快" class="headerlink" title="查询时MyISAM为什么比innoDB快"></a>查询时MyISAM为什么比innoDB快</h2><p>innoDB既要缓存索引又要缓存数据，而MyISAM只缓存索引。<br>innoDB寻址是先映射到块再映射到行，而MyISAM直接映射到文件的偏移量。<br>innoDB要维护多版本并发控制。<br>总而言之innoDB需要维护的东西比MyISAM多。</p>
+
       
     </div>
     
     
     
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/搜索引擎/" rel="tag"># 搜索引擎</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/23/让线程更安全/" rel="next" title="让线程更安全">
+                <i class="fa fa-chevron-left"></i> 让线程更安全
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -324,8 +509,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -412,6 +606,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql常用搜索引擎"><span class="nav-number">1.</span> <span class="nav-text">mysql常用搜索引擎</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#innoDB简介"><span class="nav-number">1.1.</span> <span class="nav-text">innoDB简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyISAM简介"><span class="nav-number">1.2.</span> <span class="nav-text">MyISAM简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引擎对比"><span class="nav-number">1.3.</span> <span class="nav-text">引擎对比</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#innoDB死锁"><span class="nav-number">1.4.</span> <span class="nav-text">innoDB死锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查询时MyISAM为什么比innoDB快"><span class="nav-number">1.5.</span> <span class="nav-text">查询时MyISAM为什么比innoDB快</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-23T09:13:52.963Z</updated>
+  <updated>2018-03-28T05:54:07.951Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>mysql常用搜索引擎</title>
+    <link href="http://yoursite.com/2018/03/28/mysql%E5%B8%B8%E7%94%A8%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
+    <id>http://yoursite.com/2018/03/28/mysql常用搜索引擎/</id>
+    <published>2018-03-28T05:51:51.964Z</published>
+    <updated>2018-03-28T05:54:07.951Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="mysql常用搜索引擎"><a href="#mysql常用搜索引擎" class="headerlink" title="mysql常用搜索引擎"></a>mysql常用搜索引擎</h1><h2 id="innoDB简介"><a href="#innoDB简介" class="headerlink" title="innoDB简介"></a>innoDB简介</h2><p>innoDB引擎，它是一个事务型的引擎，它设计为了处理大量数据提供高性能的服务。它支持事物处理、实现sql标准的四种隔离级、支持行级锁但行级锁并不是决对的、外键以及利用事物日志进行数据的恢复，不支持FULLTEXT类型的索引，清空表时不会新建表而是一行一行删除。适合需要事物，大量数据读写的项目。</p><h2 id="MyISAM简介"><a href="#MyISAM简介" class="headerlink" title="MyISAM简介"></a>MyISAM简介</h2><p>MyISAM引擎是mysql的默认引擎，它可以高性能的读取。表级别锁，记录了全表的行数，当使用count时不会进行全表扫描，不支持事物，对表进行insert和update时会对表进行锁定，发生故障无法恢复。适合不需要事物，读取频繁，插入少的项目。</p><h2 id="引擎对比"><a href="#引擎对比" class="headerlink" title="引擎对比"></a>引擎对比</h2><table><thead><tr><th style="text-align:center">对比</th><th style="text-align:center">innoDB</th><th style="text-align:center">MyISAM </th></tr></thead><tbody><tr><td style="text-align:center">主外键</td><td style="text-align:center">O</td><td style="text-align:center">X</td></tr><tr><td style="text-align:center">事物</td><td style="text-align:center">O</td><td style="text-align:center">X</td></tr><tr><td style="text-align:center">锁</td><td style="text-align:center">行级，操作时指锁定一行，适合高并发</td><td style="text-align:center">表级，操作时会锁住整张表</td></tr><tr><td style="text-align:center">缓存</td><td style="text-align:center">既缓存索引又缓存数据，对内存要求高，内存影响性能</td><td style="text-align:center">只缓存索引不缓存数据</td></tr><tr><td style="text-align:center">表空间</td><td style="text-align:center">大</td><td style="text-align:center">小</td></tr><tr><td style="text-align:center">关注点</td><td style="text-align:center">事物</td><td style="text-align:center">性能</td></tr></tbody></table><h2 id="innoDB死锁"><a href="#innoDB死锁" class="headerlink" title="innoDB死锁"></a>innoDB死锁</h2><p>innoDB是行级别锁，但mysql行级锁不是锁主整行，而是锁主索引，索引又分为主键索引和非主键索引，当操作了主键，则锁住主键，当操作了非主键索引，则会先锁住这个非主键索引再去锁住主键。这样就造成了会出现死锁的现象。</p><h2 id="查询时MyISAM为什么比innoDB快"><a href="#查询时MyISAM为什么比innoDB快" class="headerlink" title="查询时MyISAM为什么比innoDB快"></a>查询时MyISAM为什么比innoDB快</h2><p>innoDB既要缓存索引又要缓存数据，而MyISAM只缓存索引。<br>innoDB寻址是先映射到块再映射到行，而MyISAM直接映射到文件的偏移量。<br>innoDB要维护多版本并发控制。<br>总而言之innoDB需要维护的东西比MyISAM多。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;center&gt;&lt;font color=&quot;#888888&quot;&gt;本文介绍mysql的两种常用搜索引擎innoDB和MyISAM，并比较两种的不同以及适用场景。&lt;/font&gt;&lt;/center&gt;
+    
+    </summary>
+    
+      <category term="mysql" scheme="http://yoursite.com/categories/mysql/"/>
+    
+    
+      <category term="搜索引擎" scheme="http://yoursite.com/tags/%E6%90%9C%E7%B4%A2%E5%BC%95%E6%93%8E/"/>
+    
+  </entry>
   
   <entry>
     <title>让线程更安全</title>
