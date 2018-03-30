@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="多线程," />
+  <meta name="keywords" content="数据结构," />
 
 
 
@@ -81,18 +81,20 @@
 
 
 
-<meta name="description" content="本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep">
-<meta name="keywords" content="多线程">
+<meta name="description" content="深入理解hashMap原理，分析hashMap源码，以及hashMap设计巧妙的地方。">
+<meta name="keywords" content="数据结构">
 <meta property="og:type" content="article">
-<meta property="og:title" content="让线程更安全">
-<meta property="og:url" content="http://yoursite.com/2018/03/23/让线程更安全/index.html">
+<meta property="og:title" content="深入理解hashMap">
+<meta property="og:url" content="http://yoursite.com/2018/03/30/深入理解HashMap/index.html">
 <meta property="og:site_name" content="桥">
-<meta property="og:description" content="本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep">
+<meta property="og:description" content="深入理解hashMap原理，分析hashMap源码，以及hashMap设计巧妙的地方。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-03-23T09:13:52.963Z">
+<meta property="og:image" content="http://img.blog.csdn.net/20180330153616088?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZnVnb3U0OTgz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
+<meta property="og:updated_time" content="2018-03-30T09:29:55.731Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="让线程更安全">
-<meta name="twitter:description" content="本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep">
+<meta name="twitter:title" content="深入理解hashMap">
+<meta name="twitter:description" content="深入理解hashMap原理，分析hashMap源码，以及hashMap设计巧妙的地方。">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20180330153616088?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZnVnb3U0OTgz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast">
 
 
 
@@ -122,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/03/23/让线程更安全/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/03/30/深入理解HashMap/"/>
 
 
 
 
 
-  <title>让线程更安全 | 桥</title>
+  <title>深入理解hashMap | 桥</title>
   
 
 
@@ -271,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/23/让线程更安全/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/30/深入理解HashMap/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="zm">
@@ -288,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">让线程更安全</h1>
+          <h1 class="post-title" itemprop="name headline">深入理解hashMap</h1>
         
 
         <div class="post-meta">
@@ -300,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-23T17:08:21+08:00">
-                2018-03-23
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-30T17:23:19+08:00">
+                2018-03-30
               </time>
             
 
@@ -347,7 +349,7 @@
 
           
               <div class="post-description">
-                  <center><font color="#888888">本文介绍使线程安全应注意的事项，在多线程编程中要时刻注意原子性、可见性、顺序性，以及实现的代码。同时拓展了一些wait、sleep</font></center>
+                  <center><font color="#888888">深入理解hashMap原理，分析hashMap源码，以及hashMap设计巧妙的地方。</font></center>
               </div>
           
 
@@ -364,35 +366,20 @@
       
 
       
-        <h1 id="让线程更安全"><a href="#让线程更安全" class="headerlink" title="让线程更安全"></a>让线程更安全</h1><p>&nbsp;&nbsp;在多线程编程中要时刻保持着三个核心的概念</p>
-<ol>
-<li>原子性：<br>&nbsp;&nbsp;原子是不可分的，原子性通俗的讲就是一次操作包含有多个步骤，这些步骤要么全部生效，要么全都无效。这一点和数据库事物的原子性概念差不多。<a id="more"></a></li>
-<li>可见性：<br>&nbsp;&nbsp;当多个线程并发访问同一个共享变量时，一个线程对共享变量的修改，其他线程能够立即看到。</li>
-<li>顺序性：<br>&nbsp;&nbsp;顺序性，指的是按照代码的先后顺序执行。但实际上JVM真正的在执行代码时，并不会保证完全按顺序执行，它为了提高执行效率会对代码进行优化，按照更高效的顺序执行。但它会保证程序最终的执行结果和按代码顺序执行时的结果保持一致的。</li>
-</ol>
-<h2 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h2><p> &nbsp;&nbsp;常用的方法便是锁和同步代码块。</p>
-<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><p> &nbsp;&nbsp;使用锁，保证同一时间只有一个线程可以使用得到锁，保证一个线程能够执行申请锁和释放锁之间的代码。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">public void testLock()&#123;</span><br><span class="line">    lock.lock();</span><br><span class="line">    try &#123;</span><br><span class="line">        int a = 1 ;</span><br><span class="line">        int b = 2 ;</span><br><span class="line">        int c = a + b ;</span><br><span class="line">    &#125;finally &#123;</span><br><span class="line">        lock.unlock();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>&nbsp;&nbsp;为了确保可以释放锁，需要把lock.unlock()放到finally中</p>
-<h3 id="同步代码块"><a href="#同步代码块" class="headerlink" title="同步代码块"></a>同步代码块</h3><p>&nbsp;&nbsp;和锁类似，都是实现资源的排他性，同一时间只会被一个线程执行，保证了代码段的原子性。同时也牺牲了性能。同步代码块使用非静态同步方法时，锁住的是当前实例，使用静态同步方法时，锁住的是该类的Class对象。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public void testLock()&#123;</span><br><span class="line">    Object object = new Object();</span><br><span class="line">    synchronized (object)&#123;</span><br><span class="line">        int a = 1 ;</span><br><span class="line">        int b = 2 ;</span><br><span class="line">        int c = a + b ;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="Atomic"><a href="#Atomic" class="headerlink" title="Atomic"></a>Atomic</h3><p>&nbsp;&nbsp;<a href="https://blog.csdn.net/zhangerqing/article/details/43057799" target="_blank" rel="noopener">https://blog.csdn.net/zhangerqing/article/details/43057799</a></p>
-<h2 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h2><p>&nbsp;&nbsp;Java提供了volatile保证了可见性。使用volatile修饰变量时，对该变量的修改会立刻更新到内存，其他线程读取时就会获得最新的值。</p>
-<h2 id="顺序性"><a href="#顺序性" class="headerlink" title="顺序性"></a>顺序性</h2><p>&nbsp;&nbsp;JVM通过happens-before原则隐性地保证顺序性。hapens-before原则：</p>
-<ol>
-<li>传递规则：动作1发生在动作2之前，动作2发生在动作3之前，则动作1肯定发生在动作3之前。</li>
-<li>锁定规则：unlock肯定会在下一个对同一个锁的lock之前发生。</li>
-<li>volatile原则：对被volatile修饰的写操作发生在后面对这个变量的读操作之前。</li>
-<li>程序次序规则：同一个线程内，按代码顺序执行</li>
-<li>线程启动规则：Thread对象的start方法比该线程所有动作都先发生。</li>
-<li>线程终结原则：线程终止检测最后发生。</li>
-<li>线程中断规则： 对线程interrupt()方法的调用先发生于对该中断异常的获取。</li>
-<li>对象终结规则：一个对象构造先于它的finalize发生。</li>
-</ol>
-<h1 id="拓展sleep和wait区别"><a href="#拓展sleep和wait区别" class="headerlink" title="拓展sleep和wait区别"></a>拓展sleep和wait区别</h1><p>&nbsp;&nbsp;wait是object类的方法，会释放锁，让出cpu，可以使用notify或notifyAll方法激活，再次获得锁便可以继续执行。sleep是线程静态方法不会释放锁。</p>
-<p align="right"><font color="#888">后续补充。。。。</font></p>
-
-
+        <h1 id="深入理解hashMap"><a href="#深入理解hashMap" class="headerlink" title="深入理解hashMap"></a>深入理解hashMap</h1><h2 id="hashMap简介"><a href="#hashMap简介" class="headerlink" title="hashMap简介"></a>hashMap简介</h2><p>HashMap是一种以K-V存储的集合对象，结合了数组结构查询快和链表结构插入、删除快的特点；它允许key、value为null<br>是一种无序并且线程不安全的集合对象。</p>
+<h2 id="hashMap初始化"><a href="#hashMap初始化" class="headerlink" title="hashMap初始化"></a>hashMap初始化</h2><p>hashMap的实例有两个参数影响其性能:”初始容量”和”加载因子”。容量是哈希表中桶的数量，初始容量知识哈希表在创建时的容量。加载因子是哈希表在其容量自动增加之前可以达到多满的一种尺度。当哈希表中的元素数超出了加载因子与当前容量的乘积时，就要对这个哈希进行rehash，从而哈希表将具有两倍左右的桶数。默认的加载因子为0.75，这是在速度和空间上的折中，加载因子过高减少空间但也增加了查询速度。在设置初始容量时应该考虑元素的总数，以此来减少rehash的次数。当初始容量大于总元素数除以加载因子时就不会发生rehash。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 默认构造函数。</span><br><span class="line">HashMap()</span><br><span class="line"></span><br><span class="line">// 指定“容量大小”的构造函数</span><br><span class="line">public HashMap(int initialCapacity)</span><br><span class="line"></span><br><span class="line">// 指定“容量大小”和“加载因子”的构造函数</span><br><span class="line">public HashMap(int initialCapacity, float loadFactor)</span><br><span class="line"></span><br><span class="line">// 包含“子Map”的构造函数</span><br><span class="line">public HashMap(Map&lt;? extends K, ? extends V&gt; m)</span><br></pre></td></tr></table></figure>
+<p>我们来看一下第三个构造函数代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public HashMap(int initialCapacity, float loadFactor) &#123;</span><br><span class="line">    if (initialCapacity &lt; 0)</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal initial capacity: &quot; +</span><br><span class="line">                                           initialCapacity);</span><br><span class="line">    if (initialCapacity &gt; MAXIMUM_CAPACITY)</span><br><span class="line">        initialCapacity = MAXIMUM_CAPACITY;</span><br><span class="line">    if (loadFactor &lt;= 0 || Float.isNaN(loadFactor))</span><br><span class="line">        throw new IllegalArgumentException(&quot;Illegal load factor: &quot; +</span><br><span class="line">                                           loadFactor);</span><br><span class="line"></span><br><span class="line">    this.loadFactor = loadFactor;</span><br><span class="line">    threshold = initialCapacity;</span><br><span class="line">    init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">void init() &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们可以发现传入了参数并没有给我们初始化，那是不是就说明我们传入的参数是无效的呢？其实这一点是hashMap设计聪明的地方，如果初始化一个hashMap，而不用岂不是占用了空间资源，实际上当我们调用了put方法便会实现初始化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">//table并没有改变，这里为true</span><br><span class="line">    if (table == EMPTY_TABLE) &#123;</span><br><span class="line">        inflateTable(threshold);</span><br><span class="line">    &#125;</span><br><span class="line">    if (key == null)</span><br><span class="line">        return putForNullKey(value);</span><br><span class="line">    int hash = hash(key);</span><br><span class="line">    int i = indexFor(hash, table.length);</span><br><span class="line">    for (Entry&lt;K,V&gt; e = table[i]; e != null; e = e.next) &#123;</span><br><span class="line">        Object k;</span><br><span class="line">        if (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;</span><br><span class="line">            V oldValue = e.value;</span><br><span class="line">            e.value = value;</span><br><span class="line">            e.recordAccess(this);</span><br><span class="line">            return oldValue;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    modCount++;</span><br><span class="line">    addEntry(hash, key, value, i);</span><br><span class="line">    return null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">  private void inflateTable(int toSize) &#123;</span><br><span class="line">      // Find a power of 2 &gt;= toSize</span><br><span class="line">      int capacity = roundUpToPowerOf2(toSize);</span><br><span class="line">//把threshold设置为最小大于输入容量的2的N次放</span><br><span class="line">      threshold = (int) Math.min(capacity * loadFactor, MAXIMUM_CAPACITY + 1);</span><br><span class="line">      table = new Entry[capacity];</span><br><span class="line">      initHashSeedAsNeeded(capacity);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>这里会把threshold设置为最小的大于输入容量的2的N次方，这也是之前提的，当rehash时，大约为2倍而不是正好2倍就在于次。而这样做也是另一个hashMap聪明的地方。<br>前面提到过hashMap的数据结构是数组和链表的结合，所以要尽量让元素分布的均匀一些，我们首先想到的便是取模，但是这样做运算消耗比较大，而它是这样做的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static int indexFor(int h, int length) &#123;</span><br><span class="line">    // assert Integer.bitCount(length) == 1 : &quot;length must be a non-zero power of 2&quot;;</span><br><span class="line">    return h &amp; (length-1);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样做的好处就相当于对它进行取模，具体的大家可以进行一下测试，当数组长度为2的N次方和非2的N次方时的对比，会发现当为2的N次方时分布更加均匀。</p>
+<h2 id="hash碰撞"><a href="#hash碰撞" class="headerlink" title="hash碰撞"></a>hash碰撞</h2><p>解决hash冲突有拉链法、开放地址法。而hashMap解决hash碰撞使用的是拉链法,当我们往hashMap中put元素的时候，先根据key的hash值，找到这个元素在数组中的位置，然后把它放到对应的位置中。如果当前元素所在的位置上已经有其他元素，则这个位置将会以链表的形式存放，后加入的放在链头，先加入的放在链尾。当需要从hashMap获取元素的时候，首先通过key的hash值找到数组中对应的位置，然后通过key的equals方法在对应位置的链表中找到需要的元素。</p>
+<h2 id="hashMap结构图"><a href="#hashMap结构图" class="headerlink" title="hashMap结构图"></a>hashMap结构图</h2><p><img src="http://img.blog.csdn.net/20180330153616088?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvZnVnb3U0OTgz/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt="结构图"></p>
 
       
     </div>
@@ -420,7 +407,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/多线程/" rel="tag"># 多线程</a>
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
           
         </div>
       
@@ -433,8 +420,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/22/java多线程/" rel="next" title="初识多线程">
-                <i class="fa fa-chevron-left"></i> 初识多线程
+              <a href="/2018/03/28/mysql常用搜索引擎/" rel="next" title="mysql常用搜索引擎">
+                <i class="fa fa-chevron-left"></i> mysql常用搜索引擎
               </a>
             
           </div>
@@ -442,10 +429,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/28/mysql常用搜索引擎/" rel="prev" title="mysql常用搜索引擎">
-                mysql常用搜索引擎 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -604,7 +587,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#让线程更安全"><span class="nav-number">1.</span> <span class="nav-text">让线程更安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#原子性"><span class="nav-number">1.1.</span> <span class="nav-text">原子性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#锁"><span class="nav-number">1.1.1.</span> <span class="nav-text">锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步代码块"><span class="nav-number">1.1.2.</span> <span class="nav-text">同步代码块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Atomic"><span class="nav-number">1.1.3.</span> <span class="nav-text">Atomic</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可见性"><span class="nav-number">1.2.</span> <span class="nav-text">可见性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顺序性"><span class="nav-number">1.3.</span> <span class="nav-text">顺序性</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展sleep和wait区别"><span class="nav-number">2.</span> <span class="nav-text">拓展sleep和wait区别</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#深入理解hashMap"><span class="nav-number">1.</span> <span class="nav-text">深入理解hashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hashMap简介"><span class="nav-number">1.1.</span> <span class="nav-text">hashMap简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hashMap初始化"><span class="nav-number">1.2.</span> <span class="nav-text">hashMap初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash碰撞"><span class="nav-number">1.3.</span> <span class="nav-text">hash碰撞</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hashMap结构图"><span class="nav-number">1.4.</span> <span class="nav-text">hashMap结构图</span></a></li></ol></li></ol></div>
             
 
           </div>
