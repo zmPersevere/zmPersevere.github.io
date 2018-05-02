@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="GC," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="游戏，电脑，手机">
-<meta property="og:type" content="website">
-<meta property="og:title" content="桥">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="本文介绍java垃圾回收的基本算法,引用计数法、标记-清除法、复制法、标记-整理法、分代收集法。">
+<meta name="keywords" content="GC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java垃圾回收（GC）机制">
+<meta property="og:url" content="http://yoursite.com/2018/04/28/java垃圾回收机制（GC）/index.html">
 <meta property="og:site_name" content="桥">
-<meta property="og:description" content="游戏，电脑，手机">
+<meta property="og:description" content="本文介绍java垃圾回收的基本算法,引用计数法、标记-清除法、复制法、标记-整理法、分代收集法。">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-04-28T01:24:24.831Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="桥">
-<meta name="twitter:description" content="游戏，电脑，手机">
+<meta name="twitter:title" content="java垃圾回收（GC）机制">
+<meta name="twitter:description" content="本文介绍java垃圾回收的基本算法,引用计数法、标记-清除法、复制法、标记-整理法、分代收集法。">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/04/28/java垃圾回收机制（GC）/"/>
 
 
 
 
 
-  <title>归档 | 桥</title>
+  <title>java垃圾回收（GC）机制 | 桥</title>
   
 
 
@@ -149,7 +151,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <a href="https://github.com/zmPersevere" class="github-corner" aria-label="View source on Github"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
@@ -255,259 +257,192 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/28/java垃圾回收机制（GC）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="zm">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桥">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">java垃圾回收（GC）机制</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-28T09:24:21+08:00">
+                2018-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 6 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
+          
+            
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/28/java垃圾回收机制（GC）/" itemprop="url">
-              
-                <span itemprop="name">java垃圾回收（GC）机制</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-04-28T09:24:21+08:00"
-              content="2018-04-28" >
-          04-28
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+          
+              <div class="post-description">
+                  <center><font color="#888888">本文介绍java垃圾回收的基本算法,引用计数法、标记-清除法、复制法、标记-整理法、分代收集法。</font></center>
+              </div>
+          
 
+        </div>
+      </header>
+    
 
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/30/深入理解HashMap/" itemprop="url">
-              
-                <span itemprop="name">深入理解hashMap</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-30T17:23:19+08:00"
-              content="2018-03-30" >
-          03-30
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/28/mysql常用搜索引擎/" itemprop="url">
-              
-                <span itemprop="name">mysql常用搜索引擎</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-28T13:51:51+08:00"
-              content="2018-03-28" >
-          03-28
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="为什么需要垃圾回收？"><a href="#为什么需要垃圾回收？" class="headerlink" title="为什么需要垃圾回收？"></a>为什么需要垃圾回收？</h1><p>&nbsp;&nbsp;我们的内存是有限的，如果不进行垃圾回收，程序不断的运行，会创建大量的对象从而把内存消耗空，导致内存不足。</p>
+<h2 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h2><p> &nbsp;&nbsp;引用计数法是早期的垃圾回收算法，目前很多的java版本已经放弃了这种算法。它的使用是给每个对象分配一个计数器，当有引用指向这个对象时，计数器加1，引用失效时，计数器减1.如果计数器为0时，则java垃圾回收器则认为这个对象可以回收。<br> &nbsp;&nbsp;它的优点便是它的实时性，不需要等到内存不够了才回收，可以根据运行时对象的计数器是否为0，对对象进行回收；回收的过程中应用也无需挂起，更新对象只影响该对象，不会扫描全部对象。<br> &nbsp;&nbsp;缺点是每次引用对象都需要去更新计数器，循环引用问题也无法解决；浪费cpu。</p>
+<h2 id="标记-清除法"><a href="#标记-清除法" class="headerlink" title="标记-清除法"></a>标记-清除法</h2><p> &nbsp;&nbsp;标记-清除法是java垃圾回收机制的另一个基本算法。标记-清除法有两个阶段。</p>
+<ol>
+<li>标记阶段：找到所有可访问的对象，做个标记。</li>
+<li>清除阶段：遍历堆，把未标记的对象回收。<br>其中可访问对象的定义为：如果栈中有一个变量a引用了一个对象，则该对象为可访问对象，如果该对象中的某一个字段引用了另外一个对象b，则b也是可访问的。<br>&nbsp;&nbsp;它的优点，可以解决循环引用的问题，必要时才回收。<br>&nbsp;&nbsp;它的缺点，回收的时候应用需要挂起，标记和清除的效率不高，会造成内存碎片。</li>
+</ol>
+<h2 id="复制法"><a href="#复制法" class="headerlink" title="复制法"></a>复制法</h2><p>&nbsp;&nbsp;复制法时为了解决标记清除法的缺陷提出来的，它讲内存分为大小相等的两块，每次只用其中的一块，当这块用完了，就将存活的对象复制到另外一块上，然后把这块内存一次清理掉，这样就不会有内存碎片的问题。<br>&nbsp;&nbsp;它的优点：实现简单，运行效率高，解决了内存碎片问题。<br>&nbsp;&nbsp;它的缺点：内存的使用只有原来的一半。</p>
+<h2 id="标记-整理法"><a href="#标记-整理法" class="headerlink" title="标记-整理法"></a>标记-整理法</h2><p>&nbsp;&nbsp;标记整理法是为了解决复制法的缺陷提出来的，它充分利用了内存空间，它和复制法一样，但是在完成标记之后，它并不直接清理可回收对象，而是将存活的对象都向另一端移动，然后清理掉边界以外的内存。<br>&nbsp;&nbsp;它的优点：解决了复制法内存只有一半的缺陷。<br>&nbsp;&nbsp;它的缺点：在对象存活率较高的情况下要执行较多的复制操作，效率低。</p>
+<h2 id="分代收集法"><a href="#分代收集法" class="headerlink" title="分代收集法"></a>分代收集法</h2><p> &nbsp;&nbsp;分代收集法是目前大部分JVM垃圾回收器采用的算法。一般情况下它把堆区划分为新生代和老年代以及堆区之外的永久代。<br> &nbsp;&nbsp;新生代的特点是每次回收时都会有大量的对象被回收，老年代的特点是每次回收时只有少量对象被回收，这样就可以根据不同代的特点来进行适合的算法。对于新生代一般采用复制法，而老年代一般采用标记-整理法，而永久代存储class类、常量、方法描述等，对永久代来说一般回收两部分：废弃常量和无用的类。<br> &nbsp;&nbsp;新生代转到老年代：新生代垃圾回收的复制法，内存空间不再按1:1进行分配，而是按照内存分为一块较大的Eden空间和两块较小的Survivor空间，一般默认比例为8:1:1（可以通过-XX:SurivorRatio=i来设置，默认i为8），每次使用Eden和其中的一个Survivor。当回收时，将Eden和其中一块Surivivor中还存活的对象一次性复制到另外一块Survivor中，然后清理Eden和刚才使用的Survivor空间。当Survivor空间不够时，那么这些对象直接通过分配担保机制进入老年代。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/23/让线程更安全/" itemprop="url">
-              
-                <span itemprop="name">让线程更安全</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-23T17:08:21+08:00"
-              content="2018-03-23" >
-          03-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/22/java多线程/" itemprop="url">
-              
-                <span itemprop="name">初识多线程</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-22T19:46:05+08:00"
-              content="2018-03-22" >
-          03-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/03/21/java代理模式/" itemprop="url">
-              
-                <span itemprop="name">Java代理模式</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-21T16:13:33+08:00"
-              content="2018-03-21" >
-          03-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/GC/" rel="tag"># GC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/30/深入理解HashMap/" rel="next" title="深入理解hashMap">
+                <i class="fa fa-chevron-left"></i> 深入理解hashMap
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -515,6 +450,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -535,8 +474,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -623,6 +571,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#为什么需要垃圾回收？"><span class="nav-number">1.</span> <span class="nav-text">为什么需要垃圾回收？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用计数法"><span class="nav-number">1.1.</span> <span class="nav-text">引用计数法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标记-清除法"><span class="nav-number">1.2.</span> <span class="nav-text">标记-清除法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#复制法"><span class="nav-number">1.3.</span> <span class="nav-text">复制法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#标记-整理法"><span class="nav-number">1.4.</span> <span class="nav-text">标记-整理法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分代收集法"><span class="nav-number">1.5.</span> <span class="nav-text">分代收集法</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -783,6 +747,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

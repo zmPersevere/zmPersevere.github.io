@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-03-30T09:29:55.731Z</updated>
+  <updated>2018-04-28T01:24:24.831Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java垃圾回收（GC）机制</title>
+    <link href="http://yoursite.com/2018/04/28/java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6%EF%BC%88GC%EF%BC%89/"/>
+    <id>http://yoursite.com/2018/04/28/java垃圾回收机制（GC）/</id>
+    <published>2018-04-28T01:24:21.680Z</published>
+    <updated>2018-04-28T01:24:24.831Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="为什么需要垃圾回收？"><a href="#为什么需要垃圾回收？" class="headerlink" title="为什么需要垃圾回收？"></a>为什么需要垃圾回收？</h1><p>&nbsp;&nbsp;我们的内存是有限的，如果不进行垃圾回收，程序不断的运行，会创建大量的对象从而把内存消耗空，导致内存不足。</p><h2 id="引用计数法"><a href="#引用计数法" class="headerlink" title="引用计数法"></a>引用计数法</h2><p> &nbsp;&nbsp;引用计数法是早期的垃圾回收算法，目前很多的java版本已经放弃了这种算法。它的使用是给每个对象分配一个计数器，当有引用指向这个对象时，计数器加1，引用失效时，计数器减1.如果计数器为0时，则java垃圾回收器则认为这个对象可以回收。<br> &nbsp;&nbsp;它的优点便是它的实时性，不需要等到内存不够了才回收，可以根据运行时对象的计数器是否为0，对对象进行回收；回收的过程中应用也无需挂起，更新对象只影响该对象，不会扫描全部对象。<br> &nbsp;&nbsp;缺点是每次引用对象都需要去更新计数器，循环引用问题也无法解决；浪费cpu。</p><h2 id="标记-清除法"><a href="#标记-清除法" class="headerlink" title="标记-清除法"></a>标记-清除法</h2><p> &nbsp;&nbsp;标记-清除法是java垃圾回收机制的另一个基本算法。标记-清除法有两个阶段。</p><ol><li>标记阶段：找到所有可访问的对象，做个标记。</li><li>清除阶段：遍历堆，把未标记的对象回收。<br>其中可访问对象的定义为：如果栈中有一个变量a引用了一个对象，则该对象为可访问对象，如果该对象中的某一个字段引用了另外一个对象b，则b也是可访问的。<br>&nbsp;&nbsp;它的优点，可以解决循环引用的问题，必要时才回收。<br>&nbsp;&nbsp;它的缺点，回收的时候应用需要挂起，标记和清除的效率不高，会造成内存碎片。</li></ol><h2 id="复制法"><a href="#复制法" class="headerlink" title="复制法"></a>复制法</h2><p>&nbsp;&nbsp;复制法时为了解决标记清除法的缺陷提出来的，它讲内存分为大小相等的两块，每次只用其中的一块，当这块用完了，就将存活的对象复制到另外一块上，然后把这块内存一次清理掉，这样就不会有内存碎片的问题。<br>&nbsp;&nbsp;它的优点：实现简单，运行效率高，解决了内存碎片问题。<br>&nbsp;&nbsp;它的缺点：内存的使用只有原来的一半。</p><h2 id="标记-整理法"><a href="#标记-整理法" class="headerlink" title="标记-整理法"></a>标记-整理法</h2><p>&nbsp;&nbsp;标记整理法是为了解决复制法的缺陷提出来的，它充分利用了内存空间，它和复制法一样，但是在完成标记之后，它并不直接清理可回收对象，而是将存活的对象都向另一端移动，然后清理掉边界以外的内存。<br>&nbsp;&nbsp;它的优点：解决了复制法内存只有一半的缺陷。<br>&nbsp;&nbsp;它的缺点：在对象存活率较高的情况下要执行较多的复制操作，效率低。</p><h2 id="分代收集法"><a href="#分代收集法" class="headerlink" title="分代收集法"></a>分代收集法</h2><p> &nbsp;&nbsp;分代收集法是目前大部分JVM垃圾回收器采用的算法。一般情况下它把堆区划分为新生代和老年代以及堆区之外的永久代。<br> &nbsp;&nbsp;新生代的特点是每次回收时都会有大量的对象被回收，老年代的特点是每次回收时只有少量对象被回收，这样就可以根据不同代的特点来进行适合的算法。对于新生代一般采用复制法，而老年代一般采用标记-整理法，而永久代存储class类、常量、方法描述等，对永久代来说一般回收两部分：废弃常量和无用的类。<br> &nbsp;&nbsp;新生代转到老年代：新生代垃圾回收的复制法，内存空间不再按1:1进行分配，而是按照内存分为一块较大的Eden空间和两块较小的Survivor空间，一般默认比例为8:1:1（可以通过-XX:SurivorRatio=i来设置，默认i为8），每次使用Eden和其中的一个Survivor。当回收时，将Eden和其中一块Surivivor中还存活的对象一次性复制到另外一块Survivor中，然后清理Eden和刚才使用的Survivor空间。当Survivor空间不够时，那么这些对象直接通过分配担保机制进入老年代。</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;center&gt;&lt;font color=&quot;#888888&quot;&gt;本文介绍java垃圾回收的基本算法,引用计数法、标记-清除法、复制法、标记-整理法、分代收集法。&lt;/font&gt;&lt;/center&gt;
+    
+    </summary>
+    
+      <category term="java" scheme="http://yoursite.com/categories/java/"/>
+    
+    
+      <category term="GC" scheme="http://yoursite.com/tags/GC/"/>
+    
+  </entry>
   
   <entry>
     <title>深入理解hashMap</title>
