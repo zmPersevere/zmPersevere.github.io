@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-05-11T03:35:12.970Z</updated>
+  <updated>2018-05-14T02:05:41.779Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="http://yoursite.com/2018/05/11/java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%86%85%E5%AD%98%E5%88%A8%E6%9E%90/"/>
     <id>http://yoursite.com/2018/05/11/java虚拟机内存刨析/</id>
     <published>2018-05-11T03:25:07.298Z</published>
-    <updated>2018-05-11T03:35:12.970Z</updated>
+    <updated>2018-05-14T02:05:41.779Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="java虚拟机内存刨析"><a href="#java虚拟机内存刨析" class="headerlink" title="java虚拟机内存刨析"></a>java虚拟机内存刨析</h1><h2 id="JVM简介"><a href="#JVM简介" class="headerlink" title="JVM简介"></a>JVM简介</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;JVM主要包含两个子系统、两个组件。分别是（class loader）类加载器系统、（Execution engine）执行引擎系统；（running data areas）运行时数据区域组件、（Native Interface）本地接口组件。这里我们主要介绍运行时数据区域组件。</p><h2 id="java虚拟机内存"><a href="#java虚拟机内存" class="headerlink" title="java虚拟机内存"></a>java虚拟机内存</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;先上一张图，看一下运行时数据区域组件的构成。</p><p><img src="/images/jvm01.jpeg" alt="这里写图片描述"></p><p> &nbsp;&nbsp;&nbsp;&nbsp;在这里，方法区、堆是jvm共享内存区，栈、本地方法栈、寄存器为线程私有内存区。</p><ul><li>方法区：方法区也叫永久代，类加载器根据给定的全限定名类名(如 java.lang.Object)来装载class文件的内容到这个区，方法区包含了类的信息包括名称、修饰符、类中的静态变量、类中定义为final类型的常量、类中的Field信息、类中的方法等，同时方法区还包括运行时常量池。</li><li>运行时常量池：运行时常量池存储的为类中的固定的常量信息、方法和Field的引用信息等，会受到方法区内存的限制，当常量池无法再申请到内存时会抛出OutOfMemoryError: PermGen space异常（Java 8以后没有方法区，由本地元空间代替，溢出会抛出OutOfMemoryError: Metaspace异常）。</li><li>堆：当程序创建了一个对象或数组时，便会在堆上给这个对象或数组分配一定的空间。这也是GC的主要回收的区域，我前面写了一篇垃圾回收的文档，主要就是介绍这部分的垃圾回收机制。如果在堆中没有内存完成实例分配，并且堆上也无法再扩展时，将会抛出OutOfMemoryError异常。这时我们可以去分析是内存溢出还是内存泄漏。内存泄露：指程序中动态分配内存给一些临时对象，但是对象不会被GC所回收，它始终占用内存。即被分配的对象可达但已无用，可用内存越来越少。内存溢出：指程序运行过程中无法申请到足够的内存而导致的一种错误。内存溢出通常发生于老年代或永久代垃圾回收后，仍然无内存空间容纳新的Java对象的情况。</li><li>栈：JVM栈是线程私有的，没当新创建一个线程的时后都会创建JVM栈。JVM主要存储基本数据类型和对象、数组的引用地址以及部分返回结果。</li><li>本地方法栈：本地方法栈和jvm栈作用几乎一样，不同在于jvm栈是jvm执行java方法服务，本地方法栈是jvm执行native方法服务（没有语言的限制）。</li><li>寄存器：寄存器是一小块内存空间，随线程而生而亡，可以把它看作当前线程所执行的字节码的行号指示器。通过它来指示下一条语句的执行。它也是唯一没有规定OutOfMemoryError的区域。</li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="java虚拟机内存刨析"><a href="#java虚拟机内存刨析" class="headerlink" title="java虚拟机内存刨析"></a>java虚拟机内存刨析</h1><h2 id="JVM简介"><a href="#JVM简介" class="headerlink" title="JVM简介"></a>JVM简介</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;JVM主要包含两个子系统、两个组件。分别是（class loader）类加载器系统、（Execution engine）执行引擎系统；（running data areas）运行时数据区域组件、（Native Interface）本地接口组件。这里我们主要介绍运行时数据区域组件。</p><h2 id="java虚拟机内存"><a href="#java虚拟机内存" class="headerlink" title="java虚拟机内存"></a>java虚拟机内存</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;先上一张图，看一下运行时数据区域组件的构成。</p><p><img src="/images/jvm01.jpeg" alt="这里写图片描述"></p><p> &nbsp;&nbsp;&nbsp;&nbsp;在这里，方法区、堆是jvm共享内存区，栈、本地方法栈、寄存器为线程私有内存区。</p><ul><li>方法区：方法区也叫永久代，类加载器根据给定的全限定名类名(如 java.lang.Object)来装载class文件的内容到这个区，方法区包含了类的信息包括名称、修饰符、类中的静态变量、类中定义为final类型的常量、类中的Field信息、类中的方法等，同时方法区还包括运行时常量池。</li><li>运行时常量池：运行时常量池存储的为类中的固定的常量信息、方法和Field的引用信息等，会受到方法区内存的限制，当常量池无法再申请到内存时会抛出OutOfMemoryError: PermGen space异常（Java 8以后没有方法区，由本地元空间代替，溢出会抛出OutOfMemoryError: Metaspace异常）。</li><li>堆：当程序创建了一个对象或数组时，便会在堆上给这个对象或数组分配一定的空间。这也是GC的主要回收的区域，我前面写了一篇垃圾回收的文档，主要就是介绍这部分的垃圾回收机制。如果在堆中没有内存完成实例分配，并且堆上也无法再扩展时，将会抛出OutOfMemoryError异常。这时我们可以去分析是内存溢出还是内存泄漏。内存泄露：指程序中动态分配内存给一些临时对象，但是对象不会被GC所回收，它始终占用内存。即被分配的对象可达但已无用，可用内存越来越少。内存溢出：指程序运行过程中无法申请到足够的内存而导致的一种错误。内存溢出通常发生于老年代或永久代垃圾回收后，仍然无内存空间容纳新的Java对象的情况。</li><li>栈：JVM栈是线程私有的，没当新创建一个线程的时后都会创建JVM栈。JVM主要存储基本数据类型和对象、数组的引用地址以及部分返回结果。</li><li>本地方法栈：本地方法栈和jvm栈作用几乎一样，不同在于jvm栈是jvm执行java方法服务，本地方法栈是jvm执行native方法服务（没有语言的限制）。</li><li>寄存器：寄存器是一小块内存空间，随线程而生而亡，可以把它看作当前线程所执行的字节码的行号指示器。通过它来记录正在执行的虚拟机字节码的地址。它也是唯一没有规定OutOfMemoryError的区域。</li></ul>]]></content>
     
     <summary type="html">
     

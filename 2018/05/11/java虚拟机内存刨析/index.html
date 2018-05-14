@@ -90,7 +90,7 @@
 <meta property="og:description" content="对java虚拟机内存进行刨析，java虚拟机的内存组成部分，分析每一部分存取的内容已经每一部分的具体作用。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/images/jvm01.jpeg">
-<meta property="og:updated_time" content="2018-05-11T03:35:12.970Z">
+<meta property="og:updated_time" content="2018-05-14T02:05:41.779Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="java虚拟机内存刨析">
 <meta name="twitter:description" content="对java虚拟机内存进行刨析，java虚拟机的内存组成部分，分析每一部分存取的内容已经每一部分的具体作用。">
@@ -376,7 +376,7 @@
 <li>堆：当程序创建了一个对象或数组时，便会在堆上给这个对象或数组分配一定的空间。这也是GC的主要回收的区域，我前面写了一篇垃圾回收的文档，主要就是介绍这部分的垃圾回收机制。如果在堆中没有内存完成实例分配，并且堆上也无法再扩展时，将会抛出OutOfMemoryError异常。这时我们可以去分析是内存溢出还是内存泄漏。内存泄露：指程序中动态分配内存给一些临时对象，但是对象不会被GC所回收，它始终占用内存。即被分配的对象可达但已无用，可用内存越来越少。内存溢出：指程序运行过程中无法申请到足够的内存而导致的一种错误。内存溢出通常发生于老年代或永久代垃圾回收后，仍然无内存空间容纳新的Java对象的情况。</li>
 <li>栈：JVM栈是线程私有的，没当新创建一个线程的时后都会创建JVM栈。JVM主要存储基本数据类型和对象、数组的引用地址以及部分返回结果。</li>
 <li>本地方法栈：本地方法栈和jvm栈作用几乎一样，不同在于jvm栈是jvm执行java方法服务，本地方法栈是jvm执行native方法服务（没有语言的限制）。</li>
-<li>寄存器：寄存器是一小块内存空间，随线程而生而亡，可以把它看作当前线程所执行的字节码的行号指示器。通过它来指示下一条语句的执行。它也是唯一没有规定OutOfMemoryError的区域。</li>
+<li>寄存器：寄存器是一小块内存空间，随线程而生而亡，可以把它看作当前线程所执行的字节码的行号指示器。通过它来记录正在执行的虚拟机字节码的地址。它也是唯一没有规定OutOfMemoryError的区域。</li>
 </ul>
 
       
@@ -638,7 +638,7 @@
 
 <div class="theme-info">
   <div class="powered-by"></div>
-  <span class="post-count">博客全站共6.8k字</span>
+  <span class="post-count">博客全站共6.9k字</span>
 </div>
 
         
